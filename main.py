@@ -16,31 +16,22 @@ def player_wins(player, computer):
 
     if player == computer:
         print("Tie")
-        return status['tie']
+        return False
 
-    if player == "s" and computer == "r":
+    winning_move = ["rs", "sp", "pr"]
+    if player + computer in winning_move:
+        print("You wins")
+        return True
 
-        print("Computer wins")
-        return status['lose']
-
-    if player == "r" and computer == "p":
-        print("Computer wins")
-        return status['lose']
-
-    if player == "p" and computer == "s":
-        print("Computer wins")
-        return status['lose']
-
-    print("You wins")
-    return status['win']
+    print("Computer wins")
+    return False
 
 
 def main():
 
-    collective_data = [("rs", 0), ("sp", 0), ("pr", 0)]
 
-    #win_moves = ["rs", "sp", "pr"]
-    #print("rs" in win_moves)
+
+    collective_data = [("rs", 0), ("sp", 0), ("pr", 0)]
 
     print("Welcome to Rock&Paper&Scissors")
     print("Enter r for rock")
@@ -48,8 +39,8 @@ def main():
     print("      s for scissor")
     print("      q to quit")
 
-    moves = ["rock", "paper", "scissor", "quit"]
-    player_input = ["r", "p", "s", "q"]
+    moves = ["r", "p", "s"]
+    player_input = moves + ["q"]
 
     print("Games starts: ")
     while True:
@@ -57,7 +48,7 @@ def main():
         while True:
             print("Enter your move: ", end="")
             player_move = input()
-            if player_input.count(player_move) != 0:
+            if player_move in player_input:
                 break
             else:
                 print("You didn't entered any move")
@@ -70,8 +61,9 @@ def main():
 
         computer_move = random.choice(player_input)
         print_move("Computer", computer_move)
-        player_wins(player_move, computer_move)
-
+        if player_wins(player_move, computer_move):
+            pass
+            #print(collective_data[player_move+computer_move])
 
 
 random.seed()
