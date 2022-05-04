@@ -1,6 +1,11 @@
 import random
 
-status = {('win', 1), ('lose', 2), ('tie', 3)}
+
+moves = ["r", "p", "s"]
+player_input = moves + ["q"]
+
+winning_moves = [("r", "s"), ("s", "p"), ("p", "r")]
+collective_winning_move = {("r", "s"): 0, ("s", "p"): 0, ("p", "r"): 0}
 
 
 def print_move(character, move):
@@ -12,46 +17,41 @@ def print_move(character, move):
         print("{} chose scissors".format(character))
 
 
-def player_wins(player, computer):
+def check_moves(player, opponent):
+    if player == opponent:
+        print("Draw")
+        return
 
-    if player == computer:
-        print("Tie")
-        return False
-
-    winning_move = ["rs", "sp", "pr"]
-    if player + computer in winning_move:
+    if (player, opponent) in winning_moves:
         print("You wins")
-        return True
+        collective_winning_move[(player, opponent)] += 1
+        return
 
-    print("Computer wins")
-    return False
+    print("Opponent wins")
+    collective_winning_move[(opponent, player)] += 1
+    return
+
+
+def get_player_move():
+    while True:
+        print("Enter your move: ", end="")
+        player_move = input()
+        if player_move in player_input:
+            return player_move
+        else:
+            print("You entered wrong move")
 
 
 def main():
-
-
-
-    collective_data = [("rs", 0), ("sp", 0), ("pr", 0)]
-
     print("Welcome to Rock&Paper&Scissors")
     print("Enter r for rock")
     print("      p for paper")
     print("      s for scissor")
     print("      q to quit")
 
-    moves = ["r", "p", "s"]
-    player_input = moves + ["q"]
-
-    print("Games starts: ")
+    print("Game starts: ")
     while True:
-
-        while True:
-            print("Enter your move: ", end="")
-            player_move = input()
-            if player_move in player_input:
-                break
-            else:
-                print("You didn't entered any move")
+        player_move = get_player_move()
 
         if player_move == "q":
             print("Bye")
@@ -59,11 +59,11 @@ def main():
 
         print_move("You", player_move)
 
-        computer_move = random.choice(player_input)
+        computer_move = random.choice(moves)
         print_move("Computer", computer_move)
-        if player_wins(player_move, computer_move):
-            pass
-            #print(collective_data[player_move+computer_move])
+        check_moves(player_move, computer_move)
+
+        print("wining strikes: ", collective_winning_move)
 
 
 random.seed()
